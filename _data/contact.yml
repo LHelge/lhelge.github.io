@@ -6,6 +6,10 @@
 - type: twitter
   icon: "fab fa-twitter"
 
+- type: telegram
+  icon: "fab fa-telegram"
+  url: "https://t.me/lhelge"
+
 - type: email
   icon: "fas fa-envelope"
   noblank: true # open link in current tab
