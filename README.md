@@ -1,2 +1,0 @@
-# lhelge.se
-This repository contains the static site generator content for [lhelge.se](https://lhelge.se). It is generated using [Jekyll](https://jekyllrb.com/) with the theme [Chirpy](https://chirpy.cotes.page/).
