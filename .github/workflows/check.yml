@@ -1,0 +1,17 @@
+name: Check build
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install aphid
+        run: cargo install aphid --locked
+
+      - name: Build site
+        run: aphid build
