@@ -3,9 +3,10 @@
 {% block page_title %}Not Found{% endblock page_title %}
 
 {% block content %}
-<article class="error-page">
-    <h1>404 — Not Found</h1>
-    <p>The page you're looking for doesn't exist.</p>
-    <p><a href="/">Back to home</a></p>
-</article>
+<div class="empty-state">
+    <div class="glyph">404</div>
+    <h1>Nothing here</h1>
+    <p>The page you're looking for has been moved, deleted, or never existed in the first place.</p>
+    <a href="/" class="cta">&larr; back to home</a>
+</div>
 {% endblock content %}

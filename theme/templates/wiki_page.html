@@ -1,35 +1,61 @@
 {% extends "base.html" %}
 
-{% block content %}
-<article class="wiki-page">
-    <h1>{{ title }}</h1>
+{% block nav_wiki %}class="active"{% endblock nav_wiki %}
 
-    <div class="wiki-layout">
-        {% if toc | length > 0 %}
-        <aside class="toc">
-            <h2>Contents</h2>
+{% block content %}
+<div class="wiki-layout">
+    {% if wiki_categories | length > 0 %}
+    <aside class="wiki-nav">
+        {% for cat in wiki_categories %}
+        <div class="wiki-nav-section">
+            {% if cat.name %}
+            <h6>{{ cat.name }}</h6>
+            {% else %}
+            <h6>Uncategorized</h6>
+            {% endif %}
             <ul>
-                {% for entry in toc %}
-                <li class="toc-h{{ entry.level }}"><a href="#{{ entry.id }}">{{ entry.text }}</a></li>
+                {% for page in cat.pages %}
+                <li><a href="{{ page.url | safe }}" {% if page.url == url %}class="active"{% endif %}>{{ page.title }}</a></li>
                 {% endfor %}
             </ul>
-        </aside>
+        </div>
+        {% endfor %}
+    </aside>
+    {% endif %}
+
+    <article>
+        {% if category %}
+        <div class="page-kicker">wiki · {{ category }}</div>
+        {% else %}
+        <div class="page-kicker">wiki</div>
+        {% endif %}
+        <h1 class="page-title">{{ title }}</h1>
+
+        {% if toc | length > 0 %}
+        <details class="toc-inline" open>
+            <summary>Contents</summary>
+            <ul>
+                {% for entry in toc %}
+                <li class="lvl-{{ entry.level }}"><a href="#{{ entry.id }}">{{ entry.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </details>
         {% endif %}
 
-        <div class="wiki-body">
+        <div class="prose">
             {{ content | safe }}
         </div>
-    </div>
 
-    {% if backlinks | length > 0 %}
-    <section class="backlinks">
-        <h2>Pages that link here</h2>
-        <ul>
-            {% for link in backlinks %}
-            <li><a href="{{ link.url | safe }}">{{ link.title }}</a></li>
-            {% endfor %}
-        </ul>
-    </section>
-    {% endif %}
-</article>
+        {% if backlinks | length > 0 %}
+        <section class="backlinks">
+            <h6>Pages that link here</h6>
+            <ul>
+                {% for link in backlinks %}
+                <li><a href="{{ link.url | safe }}">{{ link.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </section>
+        {% endif %}
+    </article>
+</div>
 {% endblock content %}

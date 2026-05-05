@@ -1,73 +1,75 @@
 {% extends "base.html" %}
 
+{% block nav_blog %}class="active"{% endblock nav_blog %}
+
 {% block content %}
-<article class="blog-post">
-    <header>
-        <h1>{{ title }}</h1>
-        <div class="post-meta">
-            {% if created %}<time>{{ created }}</time>{% endif %}
-            {% if updated %}<time>(updated {{ updated }})</time>{% endif %}
-            {% if author %}<span class="author">by {{ author }}</span>{% endif %}
-        </div>
-        {% if description %}<p class="post-description">{{ description }}</p>{% endif %}
-        {% if tags | length > 0 %}
-        <ul class="tag-list">
-            {% for tag in tags %}
-            <li><a href="/tags/{{ tag.slug }}/">{{ tag.name }}</a></li>
+<div class="{% if toc | length > 0 %}post-layout-left{% else %}page--narrow{% endif %}">
+    {% if toc | length > 0 %}
+    <aside class="toc--left">
+        <h6>Sections</h6>
+        <ul>
+            {% for entry in toc %}
+            <li class="lvl-{{ entry.level }}"><a href="#{{ entry.id }}">{{ entry.text }}</a></li>
             {% endfor %}
         </ul>
-        {% endif %}
-    </header>
-
-    {% if image %}
-    <img src="{{ image }}" alt="" class="post-hero">
+    </aside>
     {% endif %}
 
-    <div class="post-layout">
-        {% if toc | length > 0 %}
-        <aside class="toc">
-            <h2>Contents</h2>
-            <ul>
-                {% for entry in toc %}
-                <li class="toc-h{{ entry.level }}"><a href="#{{ entry.id }}">{{ entry.text }}</a></li>
-                {% endfor %}
-            </ul>
-        </aside>
+    <article>
+        <div class="post-meta">
+            {% if created %}<span>{{ created }}</span>{% endif %}
+            {% if updated %}<span class="sep">·</span><span class="updated">updated {{ updated }}</span>{% endif %}
+            {% if author %}<span class="sep">·</span><span>by {{ author }}</span>{% endif %}
+        </div>
+        <h1 class="page-title" style="margin-top: 6px">{{ title }}</h1>
+        {% if description %}<p class="page-subtitle">{{ description }}</p>{% endif %}
+        {% if tags | length > 0 %}
+        <div class="tag-row" style="margin-top: 18px">
+            {% for tag in tags %}
+            <a href="/tags/{{ tag.slug }}/" class="tag">#{{ tag.name }}</a>
+            {% endfor %}
+        </div>
         {% endif %}
 
-        <div class="post-body">
+        {% if image %}
+        <div class="post-hero">
+            <img src="{{ image }}" alt="">
+        </div>
+        {% endif %}
+
+        <div class="prose" style="margin-top: 32px">
             {{ content | safe }}
         </div>
-    </div>
 
-    {% if backlinks | length > 0 %}
-    <section class="backlinks">
-        <h2>Pages that link here</h2>
-        <ul>
-            {% for link in backlinks %}
-            <li><a href="{{ link.url | safe }}">{{ link.title }}</a></li>
-            {% endfor %}
-        </ul>
-    </section>
-    {% endif %}
+        {% if newer_post or older_post %}
+        <nav class="prev-next">
+            {% if newer_post %}
+            <a href="{{ newer_post.url | safe }}">
+                <span class="label"><span class="arrow">&larr;</span> Previous</span>
+                <span class="post-title-link">{{ newer_post.title }}</span>
+                {% if newer_post.created %}<span class="post-date">{{ newer_post.created }}</span>{% endif %}
+            </a>
+            {% else %}<span></span>{% endif %}
+            {% if older_post %}
+            <a href="{{ older_post.url | safe }}" class="next">
+                <span class="label">Next <span class="arrow">&rarr;</span></span>
+                <span class="post-title-link">{{ older_post.title }}</span>
+                {% if older_post.created %}<span class="post-date">{{ older_post.created }}</span>{% endif %}
+            </a>
+            {% else %}<span></span>{% endif %}
+        </nav>
+        {% endif %}
 
-    {% if newer_post or older_post %}
-    <nav class="post-nav" aria-label="Adjacent posts">
-        {% if newer_post %}
-        <a class="post-nav-newer" rel="prev" href="{{ newer_post.url | safe }}">
-            <span class="post-nav-label">&larr; Newer</span>
-            <span class="post-nav-title">{{ newer_post.title }}</span>
-            {% if newer_post.created %}<time>{{ newer_post.created }}</time>{% endif %}
-        </a>
+        {% if backlinks | length > 0 %}
+        <section class="backlinks">
+            <h6>Pages that link here</h6>
+            <ul>
+                {% for link in backlinks %}
+                <li><a href="{{ link.url | safe }}">{{ link.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </section>
         {% endif %}
-        {% if older_post %}
-        <a class="post-nav-older" rel="next" href="{{ older_post.url | safe }}">
-            <span class="post-nav-label">Older &rarr;</span>
-            <span class="post-nav-title">{{ older_post.title }}</span>
-            {% if older_post.created %}<time>{{ older_post.created }}</time>{% endif %}
-        </a>
-        {% endif %}
-    </nav>
-    {% endif %}
-</article>
+    </article>
+</div>
 {% endblock content %}
