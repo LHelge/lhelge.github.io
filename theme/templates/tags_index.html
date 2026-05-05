@@ -1,12 +1,17 @@
 {% extends "base.html" %}
 
 {% block page_title %}Tags{% endblock page_title %}
+{% block nav_blog %}class="active"{% endblock nav_blog %}
 
 {% block content %}
-<h1>Tags</h1>
-<ul class="tag-index">
-    {% for entry in tags %}
-    <li><a href="/tags/{{ entry.slug }}/">{{ entry.name }}</a> ({{ entry.count }})</li>
-    {% endfor %}
-</ul>
+<div class="page--narrow">
+    <div class="page-kicker">/tags</div>
+    <h1 class="page-title">All tags</h1>
+
+    <div class="tags-cloud">
+        {% for entry in tags %}
+        <a href="/tags/{{ entry.slug }}/" class="tag">#{{ entry.name }}<span class="count">({{ entry.count }})</span></a>
+        {% endfor %}
+    </div>
+</div>
 {% endblock content %}

@@ -1,19 +1,26 @@
 {% extends "base.html" %}
 
 {% block page_title %}Wiki{% endblock page_title %}
+{% block nav_wiki %}class="active"{% endblock nav_wiki %}
 
 {% block content %}
-<h1>Wiki</h1>
-{% for category in categories %}
-{% if category.name %}
-<h2>{{ category.name }}</h2>
-{% else %}
-<h2>Uncategorized</h2>
-{% endif %}
-<ul class="wiki-list">
-    {% for page in category.pages %}
-    <li><a href="{{ page.url | safe }}">{{ page.title }}</a></li>
+<div class="page--narrow">
+    <div class="page-kicker">/wiki</div>
+    <h1 class="page-title">Wiki</h1>
+
+    {% for category in categories %}
+    <section class="cat-group">
+        {% if category.name %}
+        <h2>{{ category.name }}<span class="count">{{ category.pages | length }} entries</span></h2>
+        {% else %}
+        <h2>Uncategorized<span class="count">{{ category.pages | length }} entries</span></h2>
+        {% endif %}
+        <ul class="cat-list">
+            {% for page in category.pages %}
+            <li><a href="{{ page.url | safe }}">{{ page.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </section>
     {% endfor %}
-</ul>
-{% endfor %}
+</div>
 {% endblock content %}
