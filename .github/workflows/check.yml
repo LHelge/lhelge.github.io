@@ -10,8 +10,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install aphid
-        run: cargo install aphid --locked
-
       - name: Build site
-        run: aphid build
+        uses: LHelge/aphid@main
