@@ -187,6 +187,48 @@ Renders the tag listing at `/tags/`.
 
 Error page. No additional variables beyond the global ones.
 
+## Mermaid diagrams
+
+Aphid bundles mermaid for rendering client-side diagrams (flowcharts, state machines, etc.).
+To enable mermaid rendering in your theme:
+
+1. Place `mermaid.min.js` in `mytheme/static/js/` (download from a CDN or copy from another
+   aphid theme)
+2. In `base.html`, conditionally load the script and initialize with theme colors:
+
+```html
+{% if contains_mermaid %}
+<script src="/static/js/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      darkMode: true,
+      background: '#1a1a1a',
+      primaryColor: '#333333',
+      primaryTextColor: '#ffffff',
+      primaryBorderColor: '#ff00ff',
+      noteBkgColor: '#cccccc',
+      noteTextColor: '#000000',
+      noteBorderColor: '#999999'
+    }
+  });
+</script>
+{% endif %}
+```
+
+The `contains_mermaid` variable is set to `true` by aphid when the page contains mermaid
+diagram blocks. Key theme variables:
+
+- `darkMode` — toggle dark mode
+- `background` — page/canvas background
+- `primaryColor`, `primaryTextColor`, `primaryBorderColor` — node styling
+- `noteBkgColor`, `noteTextColor`, `noteBorderColor` — note box styling
+- `lineColor`, `textColor` — diagram lines and text
+
+Customize colors to match your site's palette for consistent branding.
+
 ## Static files and CSS
 
 Place stylesheets, scripts, and other assets in `mytheme/static/`. They are copied to the
