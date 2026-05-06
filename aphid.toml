@@ -1,3 +1,4 @@
 title = "lhelge.se"
 base_url = "https://lhelge.se"
 theme_dir = "theme"
+favicon = "static/favicon.svg"

@@ -18,6 +18,20 @@ aphid serve -p 8080    # serve on a custom port
 
 Output goes to `dist/` which is git-ignored. Configuration is in `aphid.toml`.
 
+## Configuration (`aphid.toml`)
+
+`aphid` reads `aphid.toml` from the project root by default. Use `--config <path>` to point to
+an alternate file.
+
+Required fields are `title` and `base_url`. Common optional fields include `description`,
+`source_dir`, `static_dir`, `theme_dir`, `posts_per_page`, `feed_limit`, and `wiki_categories`.
+You can also define repeated `[[authors]]` and `[[socials]]` entries.
+
+There is also a `favicon` config value: set it to a relative path to an SVG or raster source
+image, and aphid will generate the favicon asset set and tags.
+
+Path fields are resolved relative to the directory containing `aphid.toml`.
+
 ## Scaffold new content
 
 ```sh
