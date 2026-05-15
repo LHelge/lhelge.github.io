@@ -10,11 +10,7 @@
 
     {% for category in categories %}
     <section class="cat-group">
-        {% if category.name %}
         <h2>{{ category.name }}<span class="count">{{ category.pages | length }} entries</span></h2>
-        {% else %}
-        <h2>Uncategorized<span class="count">{{ category.pages | length }} entries</span></h2>
-        {% endif %}
         <ul class="cat-list">
             {% for page in category.pages %}
             <li><a href="{{ page.url | safe }}">{{ page.title }}</a></li>

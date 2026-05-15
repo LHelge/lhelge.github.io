@@ -2,3 +2,10 @@ title = "lhelge.se"
 base_url = "https://lhelge.se"
 theme_dir = "theme"
 favicon = "static/favicon.svg"
+social_image = "static/social.png"
+
+[[authors]]
+name = "LHelge"
+image = "static/authors/lhelge.png"
+email = "linus@lhelge.se"
+link = "https://lhelge.se/about/"

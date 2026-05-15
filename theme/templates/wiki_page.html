@@ -8,11 +8,7 @@
     <aside class="wiki-nav">
         {% for cat in wiki_categories %}
         <div class="wiki-nav-section">
-            {% if cat.name %}
             <h6>{{ cat.name }}</h6>
-            {% else %}
-            <h6>Uncategorized</h6>
-            {% endif %}
             <ul>
                 {% for page in cat.pages %}
                 <li><a href="{{ page.url | safe }}" {% if page.url == url %}class="active"{% endif %}>{{ page.title }}</a></li>
