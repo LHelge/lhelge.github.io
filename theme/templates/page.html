@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="page--narrow">
-    <div class="page-kicker">{{ url | safe }}</div>
+    <div class="page-kicker">{{ url | trim_end_matches(pat="/") | safe }}</div>
     <h1 class="page-title">{{ title }}</h1>
     <div class="prose" style="margin-top: 32px">
         {{ content | safe }}
