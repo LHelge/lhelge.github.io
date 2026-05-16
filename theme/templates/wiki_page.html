@@ -20,11 +20,7 @@
     {% endif %}
 
     <article>
-        {% if category %}
         <div class="page-kicker">wiki · {{ category }}</div>
-        {% else %}
-        <div class="page-kicker">wiki</div>
-        {% endif %}
         <h1 class="page-title">{{ title }}</h1>
 
         {% if toc | length > 0 %}
