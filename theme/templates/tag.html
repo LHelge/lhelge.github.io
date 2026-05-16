@@ -6,30 +6,55 @@
 {% block content %}
 <div class="page--narrow">
     <div class="page-kicker">/tags/{{ tag_slug }}</div>
-    <h1 class="page-title">Posts tagged <span style="color: var(--accent)">#{{ tag }}</span></h1>
+    <h1 class="page-title">Tagged <span style="color: var(--accent)">#{{ tag }}</span></h1>
 
-    <div style="margin-top: 32px">
-        {% for post in posts %}
-        <article class="post-card">
-            <div>
-                <div class="meta">
-                    {% if post.created %}{{ post.created }}{% endif %}
-                    {% if post.tags | length > 0 %} · {{ post.tags[0].name }}{% endif %}
-                </div>
-                <h2><a href="{{ post.url | safe }}">{{ post.title }}</a></h2>
-                {% if post.description %}<p class="summary">{{ post.description }}</p>{% endif %}
-                {% if post.tags | length > 0 %}
-                <div class="tag-row">
-                    {% for tag in post.tags %}
-                    <a href="/tags/{{ tag.slug }}/" class="tag">#{{ tag.name }}</a>
-                    {% endfor %}
-                </div>
-                {% endif %}
-            </div>
-        </article>
-        {% endfor %}
+    {% if blog_posts | length > 0 %}
+    <div class="section-divider" style="margin-top: 32px">
+        <h6>Blog posts</h6>
+        <div class="rule"></div>
     </div>
 
-    {% if pagination %}{% include "pagination.html" %}{% endif %}
+    {% for post in blog_posts %}
+    <article class="post-card{% if post.image %} post-card--with-image{% endif %}">
+        {% if post.image %}
+        <a href="{{ post.url | safe }}">
+            <img src="{{ post.image }}" alt="" class="hero-thumb">
+        </a>
+        {% endif %}
+        <div>
+            <div class="meta">
+                {% if post.created %}{{ post.created }}{% endif %}
+                {% if post.tags | length > 0 %} · {{ post.tags[0].name }}{% endif %}
+            </div>
+            <h2><a href="{{ post.url | safe }}">{{ post.title }}</a></h2>
+            {% if post.description %}<p class="summary">{{ post.description }}</p>{% endif %}
+            {% if post.tags | length > 0 %}
+            <div class="tag-row">
+                {% for t in post.tags %}
+                <a href="/tags/{{ t.slug }}/" class="tag">#{{ t.name }}</a>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </article>
+    {% endfor %}
+    {% endif %}
+
+    {% if wiki_pages | length > 0 %}
+    <div class="section-divider" style="margin-top: 32px">
+        <h6>Wiki pages</h6>
+        <div class="rule"></div>
+    </div>
+
+    <ul class="cat-list">
+        {% for page in wiki_pages %}
+        <li><a href="{{ page.url | safe }}">{{ page.title }}</a></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if blog_posts | length == 0 and wiki_pages | length == 0 %}
+    <p class="summary" style="margin-top: 32px">No content tagged with #{{ tag }} yet.</p>
+    {% endif %}
 </div>
 {% endblock content %}
