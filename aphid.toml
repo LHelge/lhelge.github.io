@@ -9,3 +9,7 @@ name = "LHelge"
 image = "static/authors/lhelge.png"
 email = "linus@lhelge.se"
 link = "https://lhelge.se/about/"
+
+[[socials]]
+platform = "GitHub"
+url = "https://github.com/lhelge"
