@@ -6,7 +6,11 @@
 <div class="empty-state">
     <div class="glyph">404</div>
     <h1>Nothing here</h1>
+    {% if not_found %}
+    {{ not_found.content | safe }}
+    {% else %}
     <p>The page you're looking for has been moved, deleted, or never existed in the first place.</p>
+    {% endif %}
     <a href="/" class="cta">&larr; back to home</a>
 </div>
 {% endblock content %}
