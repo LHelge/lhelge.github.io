@@ -1,109 +1,70 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Project-specific guidance for working on lhelge.se. The site is built with
+[aphid](https://aphid.lhelge.se), a Rust-based static site generator for blogs
+and wikis. For aphid mechanics, see the `aphid-content` and `aphid-theme`
+skills, which load automatically when relevant.
 
 ## Project overview
 
-Personal homepage of LHelge, built with [aphid](https://aphid.lhelge.se) — a Rust-based static
-site generator for blogs and wikis with wiki-link support. The site documents small personal
-projects (larger ones like the EV conversion [Aphid EV](https://bladlus.se) have their own sites).
+Personal site for LHelge at https://lhelge.se — a notebook for small projects
+and the occasional blog post. Long-running or larger projects live on their
+own sites and are represented here by a wiki page that links out:
 
-## Build and develop
+- Aphid (the static site generator that builds this site) → https://aphid.lhelge.se ([[Aphid]])
+- Aphid EV (Beetle → Leaf-drivetrain conversion) → https://bladlus.se ([[Aphid EV]])
+
+The site is intentionally low-traffic and infrequently updated — don't write
+posts that assume an audience or a publishing cadence.
+
+## Build
 
 ```sh
-aphid build            # render site to dist/
 aphid serve            # dev server on http://localhost:3000 with live reload
-aphid serve -p 8080    # serve on a custom port
+aphid build            # render to dist/
+aphid blog new "Title" # scaffold a dated blog post
+aphid wiki new "Title" # scaffold a wiki page
 ```
 
-Output goes to `dist/` which is git-ignored. Configuration is in `aphid.toml`.
+## Writing voice (blog posts and home.md)
 
-## Configuration (`aphid.toml`)
+- First person, casual, deliberately understated. Contractions are fine.
+- Occasional emoji and italicized asides are welcome (see the hello-world post).
+- No marketing language, no "in this post we will explore…", no audience-building framing.
+- Frame the site as a personal notebook, not a blog with readers to retain.
 
-`aphid` reads `aphid.toml` from the project root by default. Use `--config <path>` to point to
-an alternate file.
+Wiki pages use a more neutral reference tone — they should still read like notes
+to future-me, but stripped of first-person commentary.
 
-Required fields are `title` and `base_url`. Common optional fields include `description`,
-`source_dir`, `static_dir`, `theme_dir`, `posts_per_page`, `feed_limit`, and `wiki_categories`.
-You can also define repeated `[[authors]]` and `[[socials]]` entries.
+## Anonymity
 
-There is also a `favicon` config value: set it to a relative path to an SVG or raster source
-image, and aphid will generate the favicon asset set and tags.
+Keep author details light. Fine to share: I'm a software engineer in Sweden
+(matches the framing in `content/home.md`). Don't introduce new specifics
+about my employer, location beyond "Sweden", family, daily routine, or other
+personal-life details — even when they come up in conversation. Treat what's
+already published on the site as the baseline; don't extrapolate beyond it.
+If a draft seems to need that kind of biographical detail to land, flag it
+instead of inventing or guessing.
 
-Path fields are resolved relative to the directory containing `aphid.toml`.
+## Cross-linking projects
 
-## Scaffold new content
+When you mention one of my projects in prose, link to its wiki page with
+`[[Name]]`, e.g. `[[Aphid]]` or `[[Aphid EV]]`. External links (source code,
+the dedicated project site, crates.io, etc.) live in the wiki page itself
+under a `# Links` section — don't paste them inline in blog posts.
 
-```sh
-aphid blog new "Post title"    # creates content/blog/YYYY-MM-DD_<slug>.md
-aphid wiki new "Page title"    # creates content/wiki/<slug>.md
-aphid page new "Page title"    # creates content/pages/<slug>.md
-```
+## Wiki organisation
 
-## Content authoring
+The wiki is open-ended — currently mostly project pages under
+`category: Projects`, but new categories can be added freely as the notebook
+grows. Don't assume "Projects" is the only category.
 
-Content lives under `content/` in three subdirectories:
+## Hosting and deploy
 
-- `content/blog/` — dated blog posts
-- `content/wiki/` — reference/wiki pages
-- `content/pages/` — standalone pages (About, Contact, etc.)
+Auto-deploys to GitHub Pages from `main` via `.github/workflows/pages.yml`.
+PRs are built (but not deployed) by `.github/workflows/check.yml`. Both
+workflows pin the `LHelge/aphid@vX.Y.Z` action — **bump the version in both
+files together** when upgrading aphid, otherwise PR checks and deploys will
+drift apart.
 
-A special `content/home.md` (no frontmatter required) provides the homepage body.
-
-Every content file is Markdown with YAML frontmatter delimited by `---`.
-
-### Blog posts (`content/blog/`)
-
-Required frontmatter: `title`, `slug`, `author`, `created` (YYYY-MM-DD).
-Optional: `updated`, `image`, `description`, `tags` (list of strings).
-The slug must be unique across all content. Use lowercase words separated by hyphens.
-Filename pattern: `YYYY-MM-DD_slug.md`. Posts live at `/blog/<slug>/`.
-
-### Wiki pages (`content/wiki/`)
-
-All frontmatter fields are optional: `title`, `category`, `created`, `updated`, `tags`.
-If `title` is omitted the filename stem is used. `category` groups pages on the wiki index.
-Wiki pages live at `/wiki/<stem>/`.
-
-### Standalone pages (`content/pages/`)
-
-Required frontmatter: `title`. Optional: `order` (sort position in nav, lower = earlier).
-Pages live at `/<stem>/`.
-
-### Heading rules
-
-The page title comes from frontmatter and is rendered as `<h1>` by the template. The markdown
-pipeline shifts all heading levels up by one, so:
-
-- Use `#` for top-level sections (becomes `<h2>`)
-- Use `##` for subsections (becomes `<h3>`), and so on
-- Never use `#` for the page title — that comes from frontmatter
-
-### Wiki-links
-
-Cross-link to any other page with `[[page-slug]]` or `[[page-slug|Display text]]`. The slug
-is the filename without the `.md` extension. Wiki-links resolve across blog, wiki, and pages —
-any slug that exists anywhere in `content/` is a valid target. Check what pages exist before
-linking.
-
-### Images and static files
-
-Place files in `static/` and reference them with absolute paths:
-`![alt](/static/images/photo.png)`.
-
-### Supported markdown extensions
-
-Tables, strikethrough (`~~text~~`), task lists (`- [x]`), footnotes (`[^1]`), and fenced code
-blocks with syntax highlighting (specify the language after the opening fence).
-
-### Writing style
-
-- Blog posts: open with a concise introduction, use `#` sections, link to wiki pages where
-  relevant, keep `description` to one or two sentences.
-- Wiki pages: neutral reference tone, start with a summary paragraph, cross-link liberally.
-- Keep content files focused — if a topic grows large, split it into its own page and link.
-
-## Theme and templates
-
-The theme lives in `theme/` (set via `theme_dir` in `aphid.toml`). For theme design details,
-template variables, and the Tera template structure, use the `/aphid-design` skill.
+Domain is `lhelge.se`, configured via `static/CNAME`.
